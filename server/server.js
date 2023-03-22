@@ -28,6 +28,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
 app.use('/api/users',require('./routes/userRoute'))
+app.use('/api/chat',require('./routes/chatRoute'))
 
 server.listen(process.env.PORT,()=>{
     console.log('server is successfully running on',process.env.PORT);
