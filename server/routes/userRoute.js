@@ -1,7 +1,7 @@
 const Authorize = require('../Auth/Authorize')
+const route=require('express').Router()
 const { registerUser, loginUser, logoutUser, getMe, updateUserDetails, updateUserPassword, deleterUser, searchUser } = require('../controller/userController')
 
-const route=require('express').Router()
 
 route.post('/register',registerUser)
 route.post('/login',loginUser)

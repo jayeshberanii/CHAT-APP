@@ -1,40 +1,32 @@
-import React, { useState, useEffect } from "react";
-import io from "socket.io-client";
+import React, { useEffect, useState } from 'react'
+import './App.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Home from './UI/Home';
+import Register from './UI/Register';
+import Login from './UI/Login';
+import ProtectedRoute from './Auth/ProtectedRoute';
+import { useDispatch, useSelector } from 'react-redux';
 
-const socket = io("http://localhost:8000");
 
 function App() {
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [isUser, setUserInfo] = useState(false)
+  const UserInfo = useSelector((state) => state.userInfo);
 
-  useEffect(() => {
-    socket.on("message", (data) => {
-      debugger
-      setMessages((prevMessages) => [...prevMessages, data]);
-    });
-  }, []);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    socket.emit("message", message);
-    debugger
-    setMessage("");
-  };
+  useEffect(() => {    
+    setUserInfo(Boolean(false));
+  }, [UserInfo]);
 
   return (
-    <div>
-      <h1>Chat App</h1>
-      <ul>
-        {messages.map((message, index) => (
-          <li key={index}>{message}</li>
-        ))}
-      </ul>
-      <form onSubmit={(e)=>handleSubmit(e)}>
-        <input type="text" value={message} onChange={(event) => setMessage(event.target.value)} />
-        <button type="submit">Send</button>
-      </form>
-    </div>
-  );
+    <BrowserRouter>
+      <Routes>
+        <Route path='/register' element={<Register/>} />
+        <Route exact path='/login' element={<Login/>} />
+        <Route path='/' element={<ProtectedRoute>
+          <Home/>
+        </ProtectedRoute>} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
-export default App;
+export default App

@@ -20,9 +20,9 @@ const registerUser = async (req, res) => {
       });
       await user.save();
 
-      const payload = {
-        user: user._id,
-      };
+      // const payload = {
+      //   user: user._id,
+      // };
       const token = jwt.sign({ user: user._id }, process.env.SECRET_KEY, {
         expiresIn: 36000,
       });
@@ -51,7 +51,8 @@ const loginUser = async (req, res) => {
           expiresIn: 36000,
         });
         res.cookie("token", token, { httpOnly: true, expiresIn: 36000 });
-        res.status(200).json({ msg: "login seccessfully" });
+        const{password:pass,...rest}=user._doc
+        res.status(200).json({ msg: "login seccessfully" ,user:rest});
       } else {
         res.status(404).json({ msg: "invalid credentials!" });
       }

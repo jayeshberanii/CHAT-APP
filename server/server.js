@@ -3,6 +3,7 @@ const app=express()
 const http=require('http')
 const dotenv=require('dotenv')
 const cookieParser=require('cookie-parser')
+const cors=require('cors')
 // const socketIO=require('socket.io')
 
 dotenv.config()
@@ -23,12 +24,13 @@ const server=http.createServer(app)
 //         io.emit("message",data)
 //     })
 // })
-
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
 app.use('/api/users',require('./routes/userRoute'))
-app.use('/api/chat',require('./routes/chatRoute'))
+app.use('/api/chats',require('./routes/chatRoute'))
+app.use('/api/messages',require('./routes/messageRoute'))
 
 server.listen(process.env.PORT,()=>{
     console.log('server is successfully running on',process.env.PORT);
